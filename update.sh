@@ -90,6 +90,3 @@ cat >> Dockerfile <<-EOF
 	# overwrite this with 'CMD []' in a dependent Dockerfile
 	CMD ["/bin/bash"]
 EOF
-
-docker build -t "${DOCKER_REPO}:${TAG_ARCH}-${VERSION}" .
-docker run --rm "${DOCKER_REPO}:${TAG_ARCH}-${VERSION}" /bin/bash -ec "echo Hello from Ubuntu!"
