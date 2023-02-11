@@ -20,9 +20,9 @@ while getopts "a:v:q:u:d:t:" opt; do
     esac
 done
 
-thisTarBase="ubuntu-$VERSION-core-cloudimg-$ARCH"
-thisTar="$thisTarBase-root.tar.gz"
-baseUrl="https://partner-images.canonical.com/core/$VERSION"
+thisTarBase="ubuntu-$VERSION-server-cloudimg-$ARCH"
+thisTar="$thisTarBase-root.tar.xz"
+baseUrl="https://cloud-images.ubuntu.com/releases/$VERSION"
 
 
 # install qemu-user-static
@@ -36,10 +36,10 @@ fi
 
 # get the image
 if \
-	wget -q --spider "$baseUrl/current" \
-	&& wget -q --spider "$baseUrl/current/$thisTar" \
+	wget -q --spider "$baseUrl/release" \
+	&& wget -q --spider "$baseUrl/release/$thisTar" \
 	; then
-		baseUrl+='/current'
+		baseUrl+='/release'
 fi
 wget -qN "$baseUrl/"{{MD5,SHA{1,256}}SUMS{,.gpg},"$thisTarBase.manifest",'unpacked/build-info.txt'} || true
 wget -N "$baseUrl/$thisTar"
