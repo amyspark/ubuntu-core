@@ -59,14 +59,26 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Dockerfile
+      - name: Get rootfs tarball
+        shell: bash
+        env:
+          THISTAR: ubuntu-${{ matrix.VERSION }}-server-cloudimg-${{ matrix.ARCH }}-root.tar.xz
+          BASEURL: https://cloud-images.ubuntu.com/releases/${{ matrix.VERSION }}/release/
+          QEMU: https://github.com/multiarch/qemu-user-static/releases/download/${{ matrix.QEMU_VER }}/x86_64_qemu-${{ matrix.QEMU_ARCH }}-static.tar.gz
         run: |
-          sudo ./update.sh -a ${{ matrix.ARCH }} -v ${{ matrix.VERSION }} -q ${{ matrix.QEMU_ARCH }} -u ${{ matrix.QEMU_VER }} -d ${{ matrix.DOCKER_REPO }} -t ${{ matrix.UNAME_ARCH }}
+          wget -N $QEMU
+          wget -N "$BASEURL$THISTAR"
+          wget -N "$BASEURL/SHA256SUMS"
+          grep "$THISTAR" SHA256SUMS | sha256sum --check
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           platforms: linux/${{ matrix.ARCH }}
+          build-args: |
+              ARCH=${{ matrix.ARCH }}
+              QEMU_ARCH=${{ matrix.QEMU_ARCH }}
+              VERSION=${{ matrix.VERSION }}
           push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
