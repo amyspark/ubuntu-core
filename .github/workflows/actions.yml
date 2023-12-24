@@ -22,7 +22,6 @@ jobs:
           - {ARCH: amd64,   QEMU_ARCH: x86_64,  UNAME_ARCH: x86_64}
           - {ARCH: arm64,   QEMU_ARCH: aarch64, UNAME_ARCH: arm64}
           - {ARCH: armhf,   QEMU_ARCH: arm,     UNAME_ARCH: armhf}
-          - {ARCH: i386,    QEMU_ARCH: i386,    UNAME_ARCH: i386}
           - {ARCH: ppc64el, QEMU_ARCH: ppc64,   UNAME_ARCH: ppc64el}
           - {ARCH: s390x,   QEMU_ARCH: s390x,   UNAME_ARCH: s390x}
           - {ARCH: riscv64,   QEMU_ARCH: riscv64,   UNAME_ARCH: riscv64}
