@@ -27,8 +27,14 @@ baseUrl="https://cloud-images.ubuntu.com/releases/$VERSION"
 
 # install qemu-user-static
 if [ -n "${QEMU_ARCH}" ]; then
+    root_dir=$(pwd)
     if [ ! -f x86_64_qemu-${QEMU_ARCH}-static.tar.gz ]; then
-        wget -N https://github.com/multiarch/qemu-user-static/releases/download/${QEMU_VER}/x86_64_qemu-${QEMU_ARCH}-static.tar.gz
+        cd /tmp
+        wget --content-disposition http://ftp.de.debian.org/debian/pool/main/q/qemu/qemu-user-static_${QEMU_VER}_amd64.deb
+        dpkg-deb -R qemu-user-static_*.deb releases
+        cd releases/usr/bin
+        for file in *; do tar -czf $root_dir/x86_64_$file.tar.gz $file; done
+        cd $root_dir
     fi
     tar -xvf x86_64_qemu-${QEMU_ARCH}-static.tar.gz -C $ROOTFS/usr/bin/
 fi
