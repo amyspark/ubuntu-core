@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        QEMU_VER: [8.2.0+ds-1]
+        QEMU_VER: [8.2.1+ds-1]
         DOCKER_REPO: [ghcr.io/amyspark/ubuntu-server]
         VERSION: ['20.04', '22.04', '23.10']
         UNAME_ARCH: [x86_64, arm64, armhf, ppc64el, s390x, riscv64]
